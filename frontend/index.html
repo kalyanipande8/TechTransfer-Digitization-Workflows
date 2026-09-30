@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tech-Transfer Digitization Dashboard</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="root">
+    <header class="topbar">
+      <h1>Tech-Transfer Digitization &amp; Process Workflow Dashboard</h1>
+      <div class="api-status" id="apiStatus">checking API...</div>
+    </header>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="documentation">Documentation</button>
+      <button class="tab" data-tab="parameters">Process Parameters</button>
+      <button class="tab" data-tab="new">Log New Data</button>
+    </nav>
+
+    <main>
+      <section id="overview" class="panel active">
+        <div class="stat-row" id="statRow"></div>
+        <div class="grid-2">
+          <div class="card">
+            <h2>Documentation Status by Site</h2>
+            <div id="docStatusChart" class="chart"></div>
+          </div>
+          <div class="card">
+            <h2>Process Parameters Out-of-Spec Rate by Site</h2>
+            <div id="specChart" class="chart"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="documentation" class="panel">
+        <div class="filters">
+          <label>Site
+            <select id="docSiteFilter"><option value="">All</option></select>
+          </label>
+          <label>Status
+            <select id="docStatusFilter"><option value="">All</option></select>
+          </label>
+        </div>
+        <table class="data-table" id="docTable">
+          <thead>
+            <tr>
+              <th>Record ID (FAIR)</th><th>Site</th><th>Type</th><th>Title</th>
+              <th>Status</th><th>Version</th><th>Owner</th><th>Updated</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="parameters" class="panel">
+        <div class="filters">
+          <label>Site
+            <select id="paramSiteFilter"><option value="">All</option></select>
+          </label>
+        </div>
+        <table class="data-table" id="paramTable">
+          <thead>
+            <tr>
+              <th>Record ID (FAIR)</th><th>Site</th><th>Batch</th><th>Parameter</th>
+              <th>Recorded</th><th>Standardized</th><th>In Spec</th><th>Recorded At</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+
+      <section id="new" class="panel">
+        <div class="grid-2">
+          <div class="card">
+            <h2>New Documentation Record</h2>
+            <form id="docForm">
+              <label>Site <select name="site_id" required></select></label>
+              <label>Doc Type
+                <select name="doc_type" required>
+                  <option>Batch Record</option>
+                  <option>SOP</option>
+                  <option>Process Validation Report</option>
+                  <option>Analytical Method Transfer</option>
+                  <option>Equipment Qualification</option>
+                  <option>Change Control</option>
+                  <option>Risk Assessment</option>
+                </select>
+              </label>
+              <label>Title <input name="title" required /></label>
+              <label>Owner <input name="owner" required /></label>
+              <label>Status
+                <select name="status">
+                  <option>Draft</option><option>In Review</option><option>Approved</option>
+                  <option>Transferred</option><option>Superseded</option>
+                </select>
+              </label>
+              <button type="submit">Create Record</button>
+            </form>
+            <div class="form-result" id="docFormResult"></div>
+          </div>
+
+          <div class="card">
+            <h2>New Process Parameter Reading</h2>
+            <form id="paramForm">
+              <label>Site <select name="site_id" required></select></label>
+              <label>Batch ID <input name="batch_id" required placeholder="SITE-01-BATCH-001" /></label>
+              <label>Parameter Name <input name="parameter_name" required placeholder="Bioreactor Temperature" /></label>
+              <label>Parameter Type
+                <select name="parameter_type" required id="paramTypeSelect">
+                  <option value="temperature">temperature</option>
+                  <option value="pressure">pressure</option>
+                  <option value="ph">ph</option>
+                  <option value="pressure_diff">pressure_diff</option>
+                  <option value="conductivity">conductivity</option>
+                  <option value="flow_rate">flow_rate</option>
+                  <option value="mixing_speed">mixing_speed</option>
+                  <option value="mass">mass</option>
+                  <option value="volume">volume</option>
+                  <option value="time">time</option>
+                </select>
+              </label>
+              <label>Unit <select name="unit" id="unitSelect"></select></label>
+              <label>Value <input name="value" type="number" step="any" required /></label>
+              <label>Spec Low <input name="spec_low" type="number" step="any" /></label>
+              <label>Spec High <input name="spec_high" type="number" step="any" /></label>
+              <button type="submit">Submit Reading</button>
+            </form>
+            <div class="form-result" id="paramFormResult"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
